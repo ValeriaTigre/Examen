@@ -12,35 +12,31 @@ import { RadioButton } from "primereact/radiobutton";
 import { InputNumber } from "primereact/inputnumber";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
-import { TecnicoService } from "../service/TecnicoService";
+import { ProductService } from "../service/ProductService";
+import { ProvinciaService as FormaPagoService } from "../service/ProvinciaService"
 
 const Crud = () => {
-    let emptyTecnico = {
+    let emptyFormaPago = {
         id: null,
-        cedula:"",
+        codigo:"",
         nombre: "",
-        apellido:"", 
-        email:"",
-        telefono:"",
-        direccion:"",
-        ciudad_id:"",
-        id_empresa:"",
+        empresa:""
     };
 
-    const [tecnicos, setTecnicos] = useState(null);
-    const [tecnicoDialog, setProvinciaDialog] = useState(false);
+    const [formaspago, setFormaPagos] = useState(null);
+    const [formapagoDialog, setFormaPagoDialog] = useState(false);
     const [deleteProductDialog, setDeleteProductDialog] = useState(false);
     const [deleteProductsDialog, setDeleteProductsDialog] = useState(false);
-    const [tecnico, setTecnico] = useState(emptyTecnico);
-    const [selectedProvincias, setSelectedTecnicos] = useState(null);
+    const [formapago, setFormaPago] = useState(emptyFormaPago);
+    const [selectedFormasPago, setSelectedFormaPago] = useState(null);
     const [submitted, setSubmitted] = useState(false);
     const [globalFilter, setGlobalFilter] = useState(null);
     const toast = useRef(null);
     const dt = useRef(null);
 
     useEffect(() => {
-        const tecnicoservice = new TecnicoService();
-        tecnicoservice.getTecnico().then((data) => setTecnicos(data));
+        const formapagoService = new FormaPagoService();
+        formapagoService.getFormaPago().then((data) => setFormaPagos(data));
     }, []);
 
     const formatCurrency = (value) => {
@@ -51,14 +47,14 @@ const Crud = () => {
     };
 
     const openNew = () => {
-        setTecnico(emptyTecnico);
+        setFormaPagos(emptyFormaPago);
         setSubmitted(false);
-        setProvinciaDialog(true);
+        setFormaPagoDialog(true);
     };
 
     const hideDialog = () => {
         setSubmitted(false);
-        setProvinciaDialog(false);
+        setFormaPagoDialog(false);
     };
 
     const hideDeleteProductDialog = () => {
@@ -72,71 +68,71 @@ const Crud = () => {
     const saveProduct = () => {
         setSubmitted(true);
 
-        if (tecnico.nombre.trim()) {
-            let _products = [...tecnicos];
-            let _product = { ...tecnico };
-            if (tecnico.id) {
-                const index = findIndexById(tecnico.id);
+        if (formapago.nombre.trim()) {
+            let _products = [...formaspago];
+            let _product = { ...formapago };
+            if (formapago.id) {
+                const index = findIndexById(formapago.id);
 
                 _products[index] = _product;
 
-                const tiposerv = new TecnicoService();
-                tiposerv.putTecnico(_product)
+                const provserv = new FormaPagoService();
+                provserv.putFormaPago(_product)
                 toast.current.show({
                     severity: "success",
                     summary: "Successful",
-                    detail: "Tecnico Actualizado",
+                    detail: "Forma Pago actualizada",
                     life: 3000,
                 });
             } else {
-                const tiposerv = new TecnicoService();
-                tiposerv.postTecnico(_product)
+                const provserv = new FormaPagoService();
+                provserv.postFormaPago(_product)
                 // _product.id = createId();
                 // _product.image = "product-placeholder.svg";
                 // _products.push(_product);
                 toast.current.show({
                     severity: "success",
                     summary: "Successful",
-                    detail: "Tecnico creado",
+                    detail: "Forma Pago creada",
                     life: 3000,
                 });
             }
 
-            setTecnicos(_products);
-            setProvinciaDialog(false);
-            setTecnico(emptyTecnico);
+            setFormaPagos(_products);
+            setFormaPagoDialog(false);
+            setFormaPagos(emptyFormaPago);
         }
     };
 
     const editProduct = (product) => {
-        setTecnico({ ...product });
-        setProvinciaDialog(true);
+        setFormaPagos({ ...product });
+        setFormaPagoDialog(true);
     };
 
     const confirmDeleteProduct = (product) => {
-        setTecnico(product);
+        setFormaPagos(product);
         setDeleteProductDialog(true);
     };
 
     const deleteProduct = () => {
-        let _products = tecnicos.filter((val) => val.id !== tecnico.id);
-        setTecnicos(_products);
+        let _products = formaspago.filter((val) => val.id !== formapago.id);
+        setFormaPagos(_products);
         setDeleteProductDialog(false);
-        setTecnico(emptyTecnico);
-        const tiposerv = new TecnicoService();
-        tiposerv.deleteTipoInstitucion(tecnico.id);
+        setFormaPagos(emptyFormaPago);
+        const provserv = new FormaPagoService();
+        provserv.deleteFormaPago(formapago.id);
         toast.current.show({
             severity: "success",
             summary: "Successful",
-            detail: "Tecnico eliminado",
+            detail: "Forma Pago eliminada",
             life: 3000,
         });
     };
 
     const findIndexById = (id) => {
         let index = -1;
-        for (let i = 0; i < tecnicos.length; i++) {
-            if (tecnicos[i].id === id) {
+        for (let i = 0; i < formaspago.length; i++) {
+            if (formaspago[i].id === id) {
                 index = i;
                 break;
             }
@@ -163,38 +159,38 @@ const Crud = () => {
     };
 
     const deleteSelectedProducts = () => {
-        let _products = tecnicos.filter((val) => !selectedProvincias.includes(val));
-        setTecnicos(_products);
+        let _products = formaspago.filter((val) => !selectedFormasPago.includes(val));
+        setFormaPagos(_products);
         setDeleteProductsDialog(false);
-        setSelectedTecnicos(null);
+        setSelectedFormaPago(null);
         toast.current.show({
             severity: "success",
             summary: "Successful",
-            detail: "Tecnicos eliminados",
+            detail: "Forma Pago eliminadas",
             life: 3000,
         });
     };
 
     const onCategoryChange = (e) => {
-        let _product = { ...tecnico };
+        let _product = { ...formapago };
         _product["category"] = e.value;
-        setTecnico(_product);
+        setFormaPagos(_product);
     };
 
     const onInputChange = (e, name) => {
         const val = (e.target && e.target.value) || "";
-        let _product = { ...tecnico };
+        let _product = { ...formapago };
         _product[`${name}`] = val;
 
-        setTecnico(_product);
+        setFormaPagos(_product);
     };
 
     const onInputNumberChange = (e, nombre) => {
         const val = e.value || 0;
-        let _product = { ...tecnico };
+        let _product = { ...formapago };
         _product[`${nombre}`] = val;
 
-        setTecnico(_product);
+        setFormaPagos(_product);
     };
 
     const leftToolbarTemplate = () => {
@@ -225,74 +221,30 @@ const Crud = () => {
         );
     };
 
-    const cedulaBodyTemplate = (rowData) => {
+    const codigoBodyTemplate = (rowData) => {
         return (
             <>
-                <span className="p-column-title">Cedula</span>
-                {rowData.cedula}
+                <span className="p-column-title">Codigo</span>
+                {rowData.codigo}
             </>
         );
     };
+
 
     const nombreBodyTemplate = (rowData) => {
         return (
             <>
                 <span className="p-column-title">Nombre</span>
-                {rowData.nombre}
+                {formatCurrency(rowData.nombre)}
             </>
         );
     };
 
-    const apellidoBodyTemplate = (rowData) => {
+    const empresaBodyTemplate = (rowData) => {
         return (
             <>
-                <span className="p-column-title">Apellido</span>
-                {rowData.apellido}
-            </>
-        );
-    };
-
-    const emailBodyTemplate = (rowData) => {
-        return (
-            <>
-                <span className="p-column-title">Email</span>
-                {rowData.email}
-            </>
-        );
-    };
-
-    const telefonoBodyTemplate = (rowData) => {
-        return (
-            <>
-                <span className="p-column-title">Telefono</span>
-                {rowData.telefono}
-            </>
-        );
-    };
-
-    const direccionBodyTemplate = (rowData) => {
-        return (
-            <>
-                <span className="p-column-title">Direccion</span>
-                {rowData.direccion}
-            </>
-        );
-    };
-
-    const ciudad_idBodyTemplate = (rowData) => {
-        return (
-            <>
-                <span className="p-column-title">Ciudad_id</span>
-                {rowData.ciudad_id}
-            </>
-        );
-    };
-
-    const id_empresaBodyTemplate = (rowData) => {
-        return (
-            <>
-                <span className="p-column-title">Id_empresa</span>
-                {rowData.id_empresa}
+                <span className="p-column-title">Empresa </span>
+                {rowData.empresa}
             </>
         );
     };
@@ -326,7 +278,7 @@ const Crud = () => {
 
     const header = (
         <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
-            <h5 className="m-0">Tecnico</h5>
+            <h5 className="m-0">Forma Pago</h5>
             <span className="block mt-2 md:mt-0 p-input-icon-left">
                 <i className="pi pi-search" />
                 <InputText type="search" onInput={(e) => setGlobalFilter(e.target.value)} placeholder="Buscar..." />
@@ -362,9 +314,9 @@ const Crud = () => {
 
                     <DataTable
                         ref={dt}
-                        value={tecnicos}
-                        selection={selectedProvincias}
-                        onSelectionChange={(e) => setSelectedTecnicos(e.value)}
+                        value={formaspago}
+                        selection={selectedFormasPago}
+                        onSelectionChange={(e) => setSelectedFormaPago(e.value)}
                         dataKey="id"
                         paginator
                         rows={10}
@@ -372,103 +324,56 @@ const Crud = () => {
                         className="datatable-responsive"
                         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink"
                         globalFilter={globalFilter}
-                        emptyMessage="No esta registrado."
+                        emptyMessage="No existen provincias registradas."
                         header={header}
                         responsiveLayout="scroll"
                     >
                         <Column selectionMode="multiple" headerStyle={{ width: "3rem" }}></Column>
                         <Column field="id" header="Id" body={idBodyTemplate} headerStyle={{ width: "14%", minWidth: "10rem" }}></Column>
-                        <Column field="cedula" header="Cedula" body={cedulaBodyTemplate} headerStyle={{ width: "14%", minWidth: "10rem" }}></Column>
-                        <Column field="nombre" header="Nombre" body={cedulaBodyTemplate} headerStyle={{ width: "14%", minWidth: "10rem" }}></Column>
-                        <Column field="apellido" header="Apellido" body={apellidoBodyTemplate} headerStyle={{ width: "14%", minWidth: "10rem" }}></Column>
-                        <Column field="Email" header="Email" body={emailBodyTemplate} headerStyle={{ width: "14%", minWidth: "10rem" }}></Column>
-                        <Column field="Telefono" header="Telefono" body={telefonoBodyTemplate} headerStyle={{ width: "14%", minWidth: "10rem" }}></Column>
-                        <Column field="Direccion" header="Direccion" body={direccionBodyTemplate} headerStyle={{ width: "14%", minWidth: "10rem" }}></Column>
-                        <Column field="Ciudad_id" header="Ciudad_Id" body={ciudad_idBodyTemplate} headerStyle={{ width: "14%", minWidth: "10rem" }}></Column>
-                        <Column field="Id_empresa" header="Id_empresa" body={id_empresaBodyTemplate} headerStyle={{ width: "14%", minWidth: "10rem" }}></Column>
+                        <Column field="codigo" header="Codigo" body={codigoBodyTemplate} headerStyle={{ width: "14%", minWidth: "10rem" }}></Column>
+                        <Column field="nombre" header="Nombre" body={nombreBodyTemplate} headerStyle={{ width: "14%", minWidth: "10rem" }}></Column>
+                        <Column field="empresa" header="Empresa" body={empresaBodyTemplate} headerStyle={{ width: "14%", minWidth: "10rem" }}></Column>
                         <Column body={actionBodyTemplate}></Column>
                     </DataTable>
 
-                    <Dialog visible={tecnicoDialog} style={{ width: "450px" }} header="Tecnico" modal className="p-fluid" footer={productDialogFooter} onHide={hideDialog}>
-                        <div className="field">
-                       
-                            <label htmlFor="name">Cedula</label>
-                            <InputText
-                                id="cedula"
-                                value={tecnico.cedula}
-                                onChange={(e) => onInputChange(e, "cedula")}
+                    <Dialog visible={formapagoDialog} style={{ width: "450px" }} header="Forma Pago" modal className="p-fluid" footer={productDialogFooter} onHide={hideDialog}>
+                    <div className="field">
+                    <label htmlFor="codigo">Codigo</label>
+                              <InputText
+                                id="codigo"
+                                value={formapago.telefono}
+                                onChange={(e) => onInputChange(e, "codigo")}
                                 required
                                 autoFocus
                                 className={classNames({
-                                    "p-invalid": submitted && !tecnico.cedula,
+                                    "p-invalid": submitted && !formapago.codigo
                                 })}
                             />
-                             <label htmlFor="description">Nombre</label>
+                            </div>
+                            <div className="field">
+                          <label htmlFor="nombre">Nombre</label>
                               <InputText
-                                id="nombre"
-                                value={tecnico.nombre}
+                                id="Nombre"
+                                value={formapago.nombre}
                                 onChange={(e) => onInputChange(e, "nombre")}
                                 required
                                 autoFocus
                                 className={classNames({
-                                    "p-invalid": submitted && !tecnico.nombre,
+                                    "p-invalid": submitted && !formapago.nombre,
                                 })}
                             />
-                            <label htmlFor="description">Apellido</label>
-                              <InputText
-                                id="apellido"
-                                value={tecnico.apellido}
-                                onChange={(e) => onInputChange(e, "apellido")}
-                                required
-                                autoFocus
-                                className={classNames({
-                                    "p-invalid": submitted && !tecnico.apellido,
-                                })}
-                            />
-                            <label htmlFor="description">Email</label>
-                              <InputText
-                                id="email"
-                                value={tecnico.email}
-                                onChange={(e) => onInputChange(e, "email")}
-                                required
-                                autoFocus
-                                className={classNames({
-                                    "p-invalid": submitted && !tecnico.email,
-                                })}
-                            />
-                            <label htmlFor="description">Telefono</label>
-                              <InputText
-                                id="telefono"
-                                value={tecnico.telefono}
-                                onChange={(e) => onInputChange(e, "telefono")}
-                                required
-                                autoFocus
-                                className={classNames({
-                                    "p-invalid": submitted && !tecnico.telefono,
-                                })}
-                            />
-                            <label htmlFor="description">Direccion</label>
-                              <InputText
-                                id="direccion"
-                                value={tecnico.direccion}
-                                onChange={(e) => onInputChange(e, "direccion")}
-                                required
-                                autoFocus
-                                className={classNames({
-                                    "p-invalid": submitted && !tecnico.direccion,
-                                })}
-                            />
-                           
-                            {submitted && !tecnico.nombre && <small className="p-invalid">El nombre del tecnico es necesario.</small>}
+                            {submitted && !formapago.nombre && <small className="p-invalid">El nombre de la forma pago necesario.</small>}
                         </div>
+                            
+                           
                     </Dialog>
 
                     <Dialog visible={deleteProductDialog} style={{ width: "450px" }} header="Confirmación" modal footer={deleteProductDialogFooter} onHide={hideDeleteProductDialog}>
                         <div className="flex align-items-center justify-content-center">
                             <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: "2rem" }} />
-                            {tecnico && (
+                            {formapago && (
                                 <span>
-                                    Está seguro de borrar el tecnico <b>{tecnico.nombre}</b>?
+                                    Está seguro de borrar la forma de pago<b>{formapago.nombre}</b>?
                                 </span>
                             )}
                         </div>
@@ -477,7 +382,7 @@ const Crud = () => {
                     <Dialog visible={deleteProductsDialog} style={{ width: "450px" }} header="Confirm" modal footer={deleteProductsDialogFooter} onHide={hideDeleteProductsDialog}>
                         <div className="flex align-items-center justify-content-center">
                             <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: "2rem" }} />
-                            {tecnico && <span>Está seguro de borrar estos tecnicos?</span>}
+                            {formapago && <span>Está seguro de borrar las formas de pago?</span>}
                         </div>
                     </Dialog>
                 </div>
@@ -490,5 +395,4 @@ const comparisonFn = function (prevProps, nextProps) {
     return prevProps.location.pathname === nextProps.location.pathname;
 };
 
-export default React.memo(Crud, comparisonFn)
-       
+export default React.memo(Crud, comparisonFn);
