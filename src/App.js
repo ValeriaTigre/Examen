@@ -12,6 +12,8 @@ import Dashboard from './components/Dashboard';
 
 import Crud from './pages/Crud';
 import CrudCuidad from './pages/CrudCuidad'
+import CrudTecnico from './pages/CrudTecnico';
+import CrudFormaPago from './pages/CrudFormaPago';
 
 import PrimeReact from 'primereact/api';
 import { Tooltip } from 'primereact/tooltip';
@@ -24,8 +26,8 @@ import './assets/demo/flags/flags.css';
 import './assets/demo/Demos.scss';
 import './assets/layout/layout.scss';
 import './App.scss';
-import CrudTecnico from './pages/CrudTecnico';
-import CrudFormaPago from './pages/CrudFormaPago';
+import CrudInformacionAdicional from './pages/CrudInformacionAdicional';
+
 
 const App = () => {
     const [layoutMode, setLayoutMode] = useState('static');
@@ -150,8 +152,8 @@ const App = () => {
                 { label: 'Provincia', icon: 'pi pi-fw pi-user-edit', to: '/crud-provincia' },
                 { label: 'Ciudad', icon: 'pi pi-fw pi-user-edit', to: '/crud-cuidad' },
                 { label: 'Tecnico', icon: 'pi pi-fw pi-user-edit', to: '/crud-tecnico' },
-                { label: 'Forma Pago', icon: 'pi pi-fw pi-user-edit', to: '/crud-formapago' },
-                { label: 'Informacion Adicional', icon: 'pi pi-fw pi-user-edit', to: '/crud-informacionadicional' },
+                { label: 'FormaPago', icon: 'pi pi-fw pi-user-edit', to: '/crud-formapago' },
+                { label: 'InformacionAdicional', icon: 'pi pi-fw pi-user-edit', to: '/crud-informacionadicional' },
             ]
         },
             ];
@@ -199,6 +201,7 @@ const App = () => {
                     <Route path="/crud-cuidad" component={CrudCuidad} />
                     <Route path="/crud-tecnico" component={CrudTecnico} />
                     <Route path="/crud-formaPago" component={CrudFormaPago} />
+                    <Route path="/crud-informacionadicional" component={CrudInformacionAdicional} />
                    
                 
                 </div>
