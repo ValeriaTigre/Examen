@@ -12,7 +12,7 @@ import { InputNumber } from "primereact/inputnumber";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import { ProductService } from "../service/ProductService";
-import { ProvinciaService as InformacionAdicionalService } from "../service/ProvinciaService"
+import {  InformacionAdicionalService } from "../service/InformacionAdicionalService"
 
 const Crud = () => {
     let emptyInformacionAdicional = {

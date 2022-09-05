@@ -2,22 +2,23 @@ import React, { useState, useEffect, useRef } from 'react';
 import classNames from 'classnames';
 import { Route, useLocation } from 'react-router-dom';
 import { CSSTransition } from 'react-transition-group';
-
 import { AppTopbar } from './AppTopbar';
 import { AppFooter } from './AppFooter';
 import { AppMenu } from './AppMenu';
 import { AppConfig } from './AppConfig';
-
+import React, { useState, useEffect, useRef } from 'react';
+import classNames from 'classnames';
+import { Route, useLocation } from 'react-router-dom';
+import { CSSTransition } from 'react-transition-group';
+import { AppTopbar } from './AppTopbar';
+import { AppFooter } from './AppFooter';
+import { AppMenu } from './AppMenu';
+import { AppConfig } from './AppConfig';
 import Dashboard from './components/Dashboard';
-
 import Crud from './pages/Crud';
 import CrudCuidad from './pages/CrudCuidad'
-import CrudTecnico from './pages/CrudTecnico';
-import CrudFormaPago from './pages/CrudFormaPago';
-
 import PrimeReact from 'primereact/api';
 import { Tooltip } from 'primereact/tooltip';
-
 import 'primereact/resources/primereact.css';
 import 'primeicons/primeicons.css';
 import 'primeflex/primeflex.css';
@@ -26,7 +27,7 @@ import './assets/demo/flags/flags.css';
 import './assets/demo/Demos.scss';
 import './assets/layout/layout.scss';
 import './App.scss';
-import CrudInformacionAdicional from './pages/CrudInformacionAdicional';
+import CrudTecnico from './pages/CrudTecnico';
 
 
 const App = () => {
@@ -152,8 +153,8 @@ const App = () => {
                 { label: 'Provincia', icon: 'pi pi-fw pi-user-edit', to: '/crud-provincia' },
                 { label: 'Ciudad', icon: 'pi pi-fw pi-user-edit', to: '/crud-cuidad' },
                 { label: 'Tecnico', icon: 'pi pi-fw pi-user-edit', to: '/crud-tecnico' },
-                { label: 'FormaPago', icon: 'pi pi-fw pi-user-edit', to: '/crud-formapago' },
-                { label: 'InformacionAdicional', icon: 'pi pi-fw pi-user-edit', to: '/crud-informacionadicional' },
+
+    
             ]
         },
             ];
@@ -199,11 +200,7 @@ const App = () => {
                     <Route path="/" exact render={() => <Dashboard colorMode={layoutColorMode} location={location} />} />
                     <Route path="/crud-provincia" component={Crud} />
                     <Route path="/crud-cuidad" component={CrudCuidad} />
-                    <Route path="/crud-tecnico" component={CrudTecnico} />
-                    <Route path="/crud-formaPago" component={CrudFormaPago} />
-                    <Route path="/crud-informacionadicional" component={CrudInformacionAdicional} />
-                   
-                
+                    <Route path="/crud-tecnico" component={CrudTecnico} />         
                 </div>
 
                 <AppFooter layoutColorMode={layoutColorMode} />

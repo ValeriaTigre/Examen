@@ -1,19 +1,16 @@
-import axios from 'axios';
-
-
 export class TecnicoService {
-
-    getTecnico (){
-        return axios.get('http://localhost:9090/api/v1.0/tecnico').then(res => res.data.result);
+    getTecnicos() {
+      return axios
+        .get("http://localhost:9090/api/v1.0/tecnico")
+        .then((res) => res.data.result);
     }
-    postTecnico (tecn){
-        return axios.post('http://localhost:9090/api/v1.0/tecnico',tecn);
+    postTecnicos(tecnico) {
+      return axios.post("http://localhost:9090/api/v1.0/tecnico", tecnico);
     }
-    putTecnico(tecni){
-        return axios.put('http://localhost:9090/api/v1.0/tecnico',tecni);
+    putTecnicos(tecnico) {
+      return axios.put("http://localhost:9090/api/v1.0/tecnico", tecnico);
     }
-    deleteTecnico (id){
-        return axios.delete('http://localhost:9090/api/v1.0/tecnico/'+id);
+    deleteTecnicos(tecnico) {
+      return axios.delete("http://localhost:9090/api/v1.0/tecnico/", tecnico);
     }
-}
-
+  }
